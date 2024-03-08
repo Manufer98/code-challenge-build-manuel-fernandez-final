@@ -1,12 +1,13 @@
 'use client'
 import React from 'react'
-import axios from 'axios'
+
 import { useFormik } from 'formik';
 import { addContactSchema } from '@/app/(auth)/schema/yup';
 
 import { useRouter, withRouter } from 'next/navigation';
 /* import ReactGoogleAutocomplete from 'react-google-autocomplete'; */
 import Link from 'next/link';
+import axios from '@/lib/axios';
 import { useSelector } from 'react-redux';
 import { useAuth } from '@/hooks/auth';
 const page = ({ params }) => {
@@ -30,9 +31,14 @@ const page = ({ params }) => {
       email: values.email
     }
 
+    axios.put(`http://127.0.0.1:8000/api/contact/${params.id}/update`,contact).then((response) => {
+      console.log(response)
+      push('/dashboard')
 
+    });
+    
 
-    fetch(`http://127.0.0.1:8000/api/contact/${params.id}/update`, {
+    /* fetch(`http://127.0.0.1:8000/api/contact/${params.id}/update`, {
 
       method: 'PUT',
       headers: {
@@ -46,7 +52,7 @@ const page = ({ params }) => {
       console.log(response)
       push('/dashboard')
 
-    });
+    }); */
 
 
   };
@@ -75,7 +81,12 @@ const page = ({ params }) => {
 
   const handleDelete = () => {
 
-    fetch(`http://127.0.0.1:8000/api/contact/${params.id}/delete`, {  // Enter your IP address here
+    axios.delete(`http://127.0.0.1:8000/api/contact/${params.id}/delete`).then((response) => {
+      console.log(response)
+      push('/dashboard')
+    });
+
+    /* fetch(`http://127.0.0.1:8000/api/contact/${params.id}/delete`, {  // Enter your IP address here
 
       method: 'DELETE',
       headers: {
@@ -88,7 +99,7 @@ const page = ({ params }) => {
     }).then((response) => {
       console.log(response)
       push('/dashboard')
-    });
+    }); */
   }
 
   return (
@@ -123,11 +134,11 @@ const page = ({ params }) => {
 
         </div>
 
-        <div className='flex items-center justify-center pt-32 '>
+        <div className='flex items-center justify-center pt-24 '>
 
           <form onSubmit={handleSubmit} className='flex flex-row flex-wrap items-center justify-center  border-dashed border-red-500'>
 
-            <div className='basis-2/4 flex flex-col items-center justify-center'>
+            <div className='sm:basis-2/4 w-full flex flex-col items-center justify-center'>
               <div>
                 <h5 className='font-medium'>Name</h5>
                 <input
@@ -169,7 +180,7 @@ const page = ({ params }) => {
               </div>
             </div>
 
-            <div className='basis-2/4 flex flex-col items-center justify-center'>
+            <div className='sm:basis-2/4 flex flex-col items-center justify-center'>
               <div>
                 <h5 className='font-medium'>Address</h5>
                 {/* <ReactGoogleAutocomplete /> */}

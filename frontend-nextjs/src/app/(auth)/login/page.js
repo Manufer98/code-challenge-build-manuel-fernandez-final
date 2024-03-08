@@ -46,11 +46,12 @@ const Login = () => {
 
     return (
         <div className='flex w-full h-full flex-col items-center justify-center  '>
+            
              <h1 className='text-3xl m-5 font-extrabold'>Welcome</h1>
             <AuthSessionStatus className="mb-4" status={status} />
             <form onSubmit={submitForm}>
 
-                {/* Email Address */}
+             
                 <div>
                     <Label htmlFor="email" className='font-bold'>Email</Label>
 
@@ -68,7 +69,7 @@ const Login = () => {
                     <InputError messages={errors.email} className="mt-2" />
                 </div>
 
-                {/* Password */}
+              
                 <div className="mt-4 ">
                     <Label htmlFor="password" className='font-bold'>Password</Label>
 
@@ -89,33 +90,9 @@ const Login = () => {
                     />
                 </div>
 
-                {/* Remember Me
-                <div className="block mt-4">
-                    <label
-                        htmlFor="remember_me"
-                        className="inline-flex items-center">
-                        <input
-                            id="remember_me"
-                            type="checkbox"
-                            name="remember"
-                            className="rounded border-gray-300 text-indigo-600 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
-                            onChange={event =>
-                                setShouldRemember(event.target.checked)
-                            }
-                        />
-
-                        <span className="ml-2 text-sm text-gray-600">
-                            Remember me
-                        </span>
-                    </label>
-                </div> */}
+               
 
                 <div className="flex items-center justify-center mt-4">
-                   {/*  <Link
-                        href="/forgot-password"
-                        className="underline text-sm text-gray-600 hover:text-gray-900">
-                        Forgot your password?
-                    </Link> */}
 
                     <Button className="bg-primary hover:bg-blue-700 text-white font-bold py-2  px-12 rounded-full m-3">Login</Button>
                 </div>

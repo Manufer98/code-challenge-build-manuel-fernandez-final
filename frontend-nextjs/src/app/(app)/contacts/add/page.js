@@ -7,6 +7,7 @@ import { addContactSchema } from '@/app/(auth)/schema/yup';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useAuth } from '@/hooks/auth';
+import axios from '@/lib/axios';
 
 const page = () => {
   const [roundedPic, setRoundedPic] = useState('');
@@ -27,8 +28,13 @@ const page = () => {
       phone: values.phone,
       email: values.email
     }
+    
+    axios.post('http://127.0.0.1:8000/api/contact/create',contact).then((response) => {
+      console.log(response)
+      push('/dashboard')
+    });
 
-    fetch('http://127.0.0.1:8000/api/contact/create', {
+    /* fetch('http://127.0.0.1:8000/api/contact/create', {
 
       method: 'POST',
       headers: {
@@ -41,7 +47,7 @@ const page = () => {
     }).then((response) => {
       console.log(response)
       push('/dashboard')
-    });
+    }); */
 
 
   };
@@ -95,10 +101,10 @@ const page = () => {
       </div>
 
 
-      <div className='flex items-center justify-center pt-32'>
+      <div className='flex  items-center justify-center pt-24'>
 
         <form onSubmit={handleSubmit} className='flex flex-row flex-wrap  border-dashed border-red-500'>
-          <div className='basis-2/4  flex flex-col items-center justify-center'>
+          <div className='sm:basis-2/4 w-full  flex flex-col items-center justify-center'>
             <div>
               <h5 className='font-medium'>Name</h5>
               <input
@@ -107,7 +113,7 @@ const page = () => {
                 onBlur={handleBlur}
                 id="name"
                 type="text"
-                className={errors.name && touched.name ? "w-50 border-2  bg-gray-200 appearance-none  border-red-500 rounded  py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500" : "w-50 bg-gray-200 appearance-none border-2 border-gray-200 rounded  py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500"}
+                className={errors.name && touched.name ? " border-2  bg-gray-200 appearance-none  border-red-500 rounded  py-2 px-2 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500" : "w-full bg-gray-200 appearance-none border-2 border-gray-200 rounded  py-2 px-2 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500"}
               />
               {errors.name && touched.name && <p className='text-red-500'>{errors.name}</p>}
             </div>
@@ -120,7 +126,7 @@ const page = () => {
                 onBlur={handleBlur}
                 id="title"
                 type="text"
-                className={errors.title && touched.title ? "w-50 border-2  bg-gray-200 appearance-none  border-red-500 rounded  py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500" : "w-50 bg-gray-200 appearance-none border-2 border-gray-200 rounded  py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500"}
+                className={errors.title && touched.title ? "w-50 border-2  bg-gray-200 appearance-none  border-red-500 rounded  py-2 px-2 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500" : "w-50 bg-gray-200 appearance-none border-2 border-gray-200 rounded  py-2 px-2 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500"}
               />
               {errors.title && touched.title && <p className='text-red-500'>{errors.title}</p>}
             </div>
@@ -135,12 +141,12 @@ const page = () => {
                 id="profilePic"
                 type="file"
 
-                className={errors.profilePic && touched.profilePic ? "w-50 border-2  bg-gray-200 appearance-none  border-red-500 rounded  py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500" : "w-50 bg-gray-200 appearance-none border-2 border-gray-200 rounded  py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500"}
+                className={errors.profilePic && touched.profilePic ? "w-50 border-2  bg-gray-200 appearance-none  border-red-500 rounded  py-2 px-2 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500" : "w-50 bg-gray-200 appearance-none border-2 border-gray-200 rounded  py-2 px-2 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500"}
               />
               {errors.profilePic && touched.profilePic && <p className='text-red-500'>{errors.profilePic}</p>}
             </div>
           </div>
-          <div className='basis-2/4 flex flex-col items-center justify-center'>
+          <div className='sm:basis-2/4 w-full flex flex-col items-center justify-center'>
             <div>
               <h5 className='font-medium'>Address</h5>
               {/* <ReactGoogleAutocomplete /> */}
@@ -150,7 +156,7 @@ const page = () => {
                 onBlur={handleBlur}
                 id="address"
                 type="text"
-                className={errors.address && touched.address ? "w-50 border-2  bg-gray-200 appearance-none  border-red-500 rounded  py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500" : "w-50 bg-gray-200 appearance-none border-2 border-gray-200 rounded  py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500"}
+                className={errors.address && touched.address ? "w-50 border-2  bg-gray-200 appearance-none  border-red-500 rounded  py-2 px-2 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500" : "w-50 bg-gray-200 appearance-none border-2 border-gray-200 rounded  py-2 px-2 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500"}
               />
               {errors.address && touched.address && <p className='text-red-500'>{errors.address}</p>}
             </div>
@@ -164,7 +170,7 @@ const page = () => {
                 onBlur={handleBlur}
                 id="phone"
                 type="text"
-                className={errors.phone && touched.phone ? "w-50 border-2  bg-gray-200 appearance-none  border-red-500 rounded  py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500" : "w-50 bg-gray-200 appearance-none border-2 border-gray-200 rounded  py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500"}
+                className={errors.phone && touched.phone ? "w-50 border-2  bg-gray-200 appearance-none  border-red-500 rounded  py-2 px-2 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500" : "w-50 bg-gray-200 appearance-none border-2 border-gray-200 rounded  py-2 px-2 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500"}
               />
               {errors.phone && touched.phone && <p className='text-red-500'>{errors.phone}</p>}
             </div>
@@ -178,7 +184,7 @@ const page = () => {
                 onBlur={handleBlur}
                 id="email"
                 type="email"
-                className={errors.email && touched.email ? "w-50 border-2  bg-gray-200 appearance-none  border-red-500 rounded  py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500" : "w-50 bg-gray-200 appearance-none border-2 border-gray-200 rounded  py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500"}
+                className={errors.email && touched.email ? "w-50 border-2  bg-gray-200 appearance-none  border-red-500 rounded  py-2 px-2 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500" : "w-50 bg-gray-200 appearance-none border-2 border-gray-200 rounded  py-2 px-2 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500"}
               />
               {errors.email && touched.email && <p className='text-red-500'>{errors.email}</p>}
             </div>

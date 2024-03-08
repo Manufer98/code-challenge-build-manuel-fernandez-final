@@ -43,6 +43,7 @@ const Dashboard = () => {
     return (
         < div className='bg-secondary'>
             <Header title="Contacts App" />
+            
             <div className='h-screen bg-secondary'>
                 <form className=" p-10">
                     <div className='flex justify-between items-center '>
@@ -69,20 +70,22 @@ const Dashboard = () => {
                         <span class="sr-only">Loading...</span>
                     </div>}
 
-                <div className='grid  grid-cols-3 items-center place-items-center   gap-5'>
+                <div className='grid  2xl:grid-cols-4 place-items-center sm:place-items-start   xl:grid-cols-3 sm:grid-cols-2 items-center   pl-10 pr-10  gap-5'>
                     {contactsAp.map(i =>
 
-                        <div key={i.id} className='w-60 h-20 flex p-5 items-start bg-white border border-gray-200 rounded-lg shadow z-auto '>
+                        <div key={i.id} className='w-full h-30 flex p-5 items-start bg-white border border-gray-200 rounded-lg shadow z-auto '>
                             <img src="https://www.creative-tim.com/learning-lab/tailwind-starter-kit/img/team-2-800x800.jpg" alt="..." class="shadow rounded-full w-10 h-10 align-middle border-none" />
-                            <div className='pl-2'>
-                                <h2 className='text-lg font-bold '>{i.name}</h2>
-                                <h4 className='text-gray-400'>Title</h4>
+                            <div className='w-full flex justify-between items-center '>
+                                <div className='pl-2'>
+                                    <h2 className='text-lg font-bold '> {i.name.length<16 ? i.name : i.name.substring(0,16)+'...' }</h2>
+                                    <h4 className='text-gray-400'>{i.title.length<16 ? i.title : i.title.substring(0,16)+'...'}</h4>
 
+                                </div>
+                                <Link href={`contacts/detail/${i.id}`} className=''>
+                                    <svg xmlns="http://www.w3.org/2000/svg" className='w-5 h-5 fill-none stroke-gray-400 stroke-2 pl-1 z-0 ' strokeLinecap="round" strokeLinejoin="round"><path d="M9 18l6-6-6-6" /></svg>
+
+                                </Link>
                             </div>
-                            <Link href={`contacts/edit/${i.id}`} className='relative'>
-                                <svg xmlns="http://www.w3.org/2000/svg" className='w-5 h-5 fill-none stroke-gray-400 stroke-2 pl-1 z-0 ' strokeLinecap="round" strokeLinejoin="round"><path d="M9 18l6-6-6-6" /></svg>
-
-                            </Link>
                         </div>
 
 

@@ -1,21 +1,13 @@
 'use client'
 import React from 'react'
-import axios from 'axios'
-import { useFormik } from 'formik';
-import { addContactSchema } from '@/app/(auth)/schema/yup';
-
-import { useRouter, withRouter } from 'next/navigation';
-/* import ReactGoogleAutocomplete from 'react-google-autocomplete'; */
 import Link from 'next/link';
 import { useSelector } from 'react-redux';
-import { useAuth } from '@/hooks/auth';
+
 const page = ({ params }) => {
   const contactsRedux = useSelector((state) => state.contacts.contacts);
   const contacts = contactsRedux.filter(i => i.id === parseInt(params.id));
   const contact = contacts.reduce((acc, cur, i) => (acc = cur), {});
-  const { push } = useRouter();
-  const { user } = useAuth({ middleware: 'auth' })
-  const { asPath } = useRouter();
+  
 
 
   console.log(contact);
@@ -47,7 +39,7 @@ const page = ({ params }) => {
         <div className='flex items-center justify-center pt-5'>
           <div className=' w-3/4 h-40 flex flex-col items-center justify-center pt-48  bg-gray-200 w-50 h-50 rounded-lg relative'>
 
-            <img className="shadow rounded-full w-24 h-24 border-solid border-2 border-black  " src="https://www.creative-tim.com/learning-lab/tailwind-starter-kit/img/team-2-800x800.jpg" alt="..." />
+            <img className="shadow rounded-full w-24 h-24 border-solid border-2 border-black  " src={contact.profilePic} alt="..." />
             <h2 className='text-xl font-bold'>{contact.name}</h2>
             <h2 className='text-gray-400'>{contact.title}</h2>
             

@@ -1,22 +1,26 @@
 'use client'
-import React from 'react'
 
+import React, {  useId, useState, useEffect } from 'react'
 import { useFormik } from 'formik';
 import { addContactSchema } from '@/app/(auth)/schema/yup';
-
-import { useRouter, withRouter } from 'next/navigation';
+import { ToastContainer, toast } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css';
+import { useRouter } from 'next/navigation';
 /* import ReactGoogleAutocomplete from 'react-google-autocomplete'; */
 import Link from 'next/link';
 import axios from '@/lib/axios';
 import { useSelector } from 'react-redux';
-import { useAuth } from '@/hooks/auth';
+import { storage } from '../../../../../config/firebase'
+import { getDownloadURL, ref, uploadBytes } from 'firebase/storage'
 const page = ({ params }) => {
   const contactsRedux = useSelector((state) => state.contacts.contacts);
   const contacts = contactsRedux.filter(i => i.id === parseInt(params.id));
   const contact = contacts.reduce((acc, cur, i) => (acc = cur), {});
   const { push } = useRouter();
-  const { user } = useAuth({ middleware: 'auth' })
-
+  const [isLoading, setIsLoading] = useState(false);
+  const [selectedImages, setSelectedImages] = useState([]);
+  const [selectedPicture, setSelectedPicture] = useState(contact.profilePic);
+  const id = useId()
 
   const onSubmit = async (values, actions) => {
 
@@ -25,35 +29,16 @@ const page = ({ params }) => {
 
       name: values.name,
       title: values.title,
-      profilePic: values.profilePic,
+      profilePic: selectedPicture,
       address: values.address,
       phone: values.phone,
       email: values.email
     }
 
     axios.put(`http://127.0.0.1:8000/api/contact/${params.id}/update`,contact).then((response) => {
-      console.log(response)
       push('/dashboard')
 
     });
-    
-
-    /* fetch(`http://127.0.0.1:8000/api/contact/${params.id}/update`, {
-
-      method: 'PUT',
-      headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json'
-      },
-      mode: 'cors',
-      body: JSON.stringify(contact)
-
-    }).then((response) => {
-      console.log(response)
-      push('/dashboard')
-
-    }); */
-
 
   };
 
@@ -78,32 +63,78 @@ const page = ({ params }) => {
     validationSchema: addContactSchema,
     onSubmit,
   });
+  useEffect(() => {
+    handleUpload();
+  }, [selectedImages])
+
+
+  const handleImageUpload = async (e) => {
+    const files = e.target.files;
+    const updatedSelectedImages = [];
+    const updatedSelectedImageNames = [];
+
+    for (let i = 0; i < files.length; i++) {
+      updatedSelectedImages.push(files[i]);
+      updatedSelectedImageNames.push(files[i].name);
+    }
+
+    //console.log(updatedSelectedImages)
+
+    setSelectedImages(updatedSelectedImages);
+
+
+
+
+
+  };
+
+  const handleUpload = async () => {
+    setIsLoading(true);
+
+    if (selectedImages.length > 0) {
+      for (let i = 0; i < selectedImages.length; i++) {
+        const image = selectedImages[i];
+        const imageRef = ref(storage, image.name+id);
+
+        try {
+          const snapshot = await uploadBytes(imageRef, image);
+          const downloadUrl = await getDownloadURL(snapshot.ref);
+          console.log(snapshot, downloadUrl);
+          setSelectedPicture(downloadUrl);
+
+          //const imagesRef = refren(db, 'images');
+          //push(imagesRef, { imageUrl: downloadUrl, timestamp: new Date().getTime() });
+          toast.success('image uploaded', {
+            position: 'top-center',
+            autoClose: 3000,
+            theme: 'dark',
+          });
+
+          setIsLoading(false);
+        } catch (e) {
+          setIsLoading(false);
+          console.log('error uploading image:', e)
+        }
+      }
+    } else {
+      console.error('No images selected');
+      setIsLoading(false);
+    }
+  }
+
 
   const handleDelete = () => {
 
     axios.delete(`http://127.0.0.1:8000/api/contact/${params.id}/delete`).then((response) => {
-      console.log(response)
       push('/dashboard')
     });
 
-    /* fetch(`http://127.0.0.1:8000/api/contact/${params.id}/delete`, {  // Enter your IP address here
-
-      method: 'DELETE',
-      headers: {
-
-        'Accept': 'application/json',
-        'Content-Type': 'application/json'
-      },
-      mode: 'cors',
-
-    }).then((response) => {
-      console.log(response)
-      push('/dashboard')
-    }); */
+   
   }
 
   return (
     <div>
+      <ToastContainer />
 
       <div className='h-screen bg-secondary'>
         <div className='bg-pink h-16 flex justify-between'>
@@ -127,7 +158,7 @@ const page = ({ params }) => {
         <div className='flex items-center justify-center pt-5'>
           <div className=' w-3/4 h-40 flex flex-col items-center justify-center pt-48  bg-gray-200 w-50 h-50 rounded-lg relative'>
 
-            <img className="shadow rounded-full w-24 h-24 border-solid border-2 border-black  " src="https://www.creative-tim.com/learning-lab/tailwind-starter-kit/img/team-2-800x800.jpg" alt="..." />
+            <img className="shadow rounded-full w-24 h-24 border-solid border-2 border-black  " src={selectedPicture} alt="..." />
             <h2 className='text-xl font-bold'>{contact.name}</h2>
             <h2 className='text-gray-400'>{contact.title}</h2>
           </div>
@@ -168,15 +199,7 @@ const page = ({ params }) => {
 
               <div>
                 <h5 className='font-medium'>Profile Picture</h5>
-                <input
-                  value={values.profilePic}
-                  onChange={handleChange}
-                  onBlur={handleBlur}
-                  id="profilePic"
-                  type="text"
-                  className={errors.profilePic && touched.profilePic ? "w-50 border-2  bg-gray-200 appearance-none  border-red-500 rounded  py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500" : "w-50 bg-gray-200 appearance-none border-2 border-gray-200 rounded  py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500"}
-                />
-                {errors.profilePic && touched.profilePic && <p className='text-red-500'>{errors.profilePic}</p>}
+                <input onChange={handleImageUpload} class="block w-full mb-5 text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400" id="default_size" type="file"></input>
               </div>
             </div>
 

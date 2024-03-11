@@ -1,54 +1,109 @@
 'use client'
-import React, { useState } from 'react'
+import React, { use, useId, useState, useEffect } from 'react'
 /* import axios from 'axios' */
 import { useFormik } from 'formik';
 import { addContactSchema } from '@/app/(auth)/schema/yup';
 /* import ReactGoogleAutocomplete from 'react-google-autocomplete'; */
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
+import { ToastContainer, toast } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css';
 import { useAuth } from '@/hooks/auth';
 import axios from '@/lib/axios';
+import { storage, db } from '../../../../config/firebase'
+import { getDownloadURL, ref, uploadBytes } from 'firebase/storage'
+import { ref as refren, push } from 'firebase/database'
 
 const page = () => {
   const [roundedPic, setRoundedPic] = useState('');
   const { push } = useRouter();
-  const { user } = useAuth({ middleware: 'auth' })
-  
+  const { user } = useAuth({ middleware: 'auth' });
+  const [selectedPic, setSelectedPic] = useState({});
+  const [isLoading, setIsLoading] = useState(false);
+  const [selectedImages, setSelectedImages] = useState([]);
+  const [selectedPicture, setSelectedPicture] = useState('');
+  const id = useId()
+  const noPhoto = 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQQyIUo7o9OTjhLasrpJkfCnrShHn07dHbCNDbW76bt4Q&s'
+
+
+  useEffect(() => {
+    handleUpload();
+  }, [selectedImages])
+
+
+  const handleImageUpload = async (e) => {
+    const files = e.target.files;
+    const updatedSelectedImages = [];
+    const updatedSelectedImageNames = [];
+
+    for (let i = 0; i < files.length; i++) {
+      updatedSelectedImages.push(files[i]);
+      updatedSelectedImageNames.push(files[i].name);
+    }
+
+    console.log(updatedSelectedImages)
+
+    setSelectedImages(updatedSelectedImages);
+
+
+
+
+
+  };
+
+  const handleUpload = async () => {
+    setIsLoading(true);
+
+    if (selectedImages.length > 0) {
+      for (let i = 0; i < selectedImages.length; i++) {
+        const image = selectedImages[i];
+        const imageRef = ref(storage, image.name + id);
+
+        try {
+          const snapshot = await uploadBytes(imageRef, image);
+          const downloadUrl = await getDownloadURL(snapshot.ref);
+          setSelectedPicture(downloadUrl);
+
+          toast.success('image uploaded', {
+            position: 'top-center',
+            autoClose: 3000,
+            theme: 'dark',
+          });
+
+          setIsLoading(false);
+        } catch (e) {
+          setIsLoading(false);
+          console.log('error uploading image:', e)
+        }
+      }
+    } else {
+      console.error('No images selected');
+      setIsLoading(false);
+    }
+  }
+
+
 
   const onSubmit = async (values, actions) => {
 
-
+    const profile=selectedPicture.length>0 ? selectedPicture : noPhoto;
 
     const contact = {
       user_id: user.id,
       name: values.name,
       title: values.title,
-      profilePic: values.profilePic,
       address: values.address,
+      profilePic: profile,
       phone: values.phone,
       email: values.email
     }
-    
-    axios.post('http://127.0.0.1:8000/api/contact/create',contact).then((response) => {
+    console.log(contact);
+    axios.post('http://127.0.0.1:8000/api/contact/create', contact).then((response) => {
       console.log(response)
       push('/dashboard')
     });
 
-    /* fetch('http://127.0.0.1:8000/api/contact/create', {
-
-      method: 'POST',
-      headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json'
-      },
-      mode: 'cors',
-      body: JSON.stringify(contact)
-
-    }).then((response) => {
-      console.log(response)
-      push('/dashboard')
-    }); */
-
+ 
 
   };
 
@@ -77,6 +132,7 @@ const page = () => {
 
   return (
     <div className='h-screen bg-secondary'>
+      <ToastContainer />
       <div className='bg-pink h-16 flex'>
         <Link href='/dashboard' type="button" className="flex items-center justify-center w-1/2 px-5 py-2 text-sm text-gray-700 transition-colors duration-200    gap-x-2 sm:w-auto ">
           <svg className="w-5 h-5 rtl:rotate-180" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor">
@@ -93,7 +149,7 @@ const page = () => {
       <div className='flex items-center justify-center pt-5'>
         <div className=' w-3/4 h-40 flex flex-col items-center justify-center pt-48  bg-gray-200 w-50 h-50 rounded-lg relative'>
 
-          <img className="shadow rounded-full w-24 h-24 border-solid border-2 border-black" src="https://img.freepik.com/foto-gratis/resumen-superficie-texturas-muro-piedra-hormigon-blanco_74190-8189.jpg?w=1380&t=st=1709500774~exp=1709501374~hmac=e38ad90d11b1ebb02eb0b8ee5183b0cfc4908fb20f84db5a823eece14e67d307" alt="..." />
+          <img className="shadow rounded-full w-24 h-24 border-solid border-2 border-black" src={selectedPicture.length > 0 ? selectedPicture : noPhoto} alt="..." />
           <h2 className='text-xl font-bold'></h2>
           <h2 className='text-gray-400'></h2>
         </div>
@@ -134,7 +190,7 @@ const page = () => {
 
             <div>
               <h5 className='font-medium'>Profile Picture</h5>
-              <input
+              {/* <input
                 value={values.profilePic}
                 onChange={handleChange}
                 onBlur={handleBlur}
@@ -142,8 +198,11 @@ const page = () => {
                 type="file"
 
                 className={errors.profilePic && touched.profilePic ? "w-50 border-2  bg-gray-200 appearance-none  border-red-500 rounded  py-2 px-2 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500" : "w-50 bg-gray-200 appearance-none border-2 border-gray-200 rounded  py-2 px-2 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500"}
-              />
-              {errors.profilePic && touched.profilePic && <p className='text-red-500'>{errors.profilePic}</p>}
+              /> */}
+
+              <input onChange={handleImageUpload} class="block w-full mb-5 text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400" id="default_size" type="file"></input>
+              {/* <input  id="profilePic" value={values.profilePic}  type="file" onChange={handleImageUpload} className="upload-input" /> */}
+              {/* {errors.profilePic && touched.profilePic && <p className='text-red-500'>{errors.profilePic}</p>} */}
             </div>
           </div>
           <div className='sm:basis-2/4 w-full flex flex-col items-center justify-center'>

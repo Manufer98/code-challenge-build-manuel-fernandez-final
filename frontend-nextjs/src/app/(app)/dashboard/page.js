@@ -4,7 +4,7 @@ import React from 'react'
 import Link from 'next/link'
 import { useState, useEffect } from 'react'
 import { InitalContacts } from '@/app/redux/slices/contactsSlice'
-import { useDispatch, useSelector } from 'react-redux'
+import { useDispatch } from 'react-redux'
 import { useAuth } from '@/hooks/auth'
 
 /* export const metadata = {
@@ -18,7 +18,6 @@ const Dashboard = () => {
     const [onError, setOnError] = useState(false);
     const dispatch = useDispatch();
     const { user } = useAuth({ middleware: 'auth' })
-    const contactsRedux = useSelector((state) => state.contacts);
     useEffect(() => {
         getData();
     }, [])
@@ -41,7 +40,7 @@ const Dashboard = () => {
             });
     }
     return (
-        < div className='bg-secondary'>
+        < div className='bg-secondary '>
             <Header title="Contacts App" />
             
             <div className='h-screen bg-secondary'>
@@ -70,11 +69,11 @@ const Dashboard = () => {
                         <span class="sr-only">Loading...</span>
                     </div>}
 
-                <div className='grid  2xl:grid-cols-4 place-items-center sm:place-items-start   xl:grid-cols-3 sm:grid-cols-2 items-center   pl-10 pr-10  gap-5'>
+                <div className='grid  2xl:grid-cols-4 place-items-center sm:place-items-start   xl:grid-cols-3 sm:grid-cols-2 items-center   pl-10 pr-10  gap-5 pb-5'>
                     {contactsAp.map(i =>
 
                         <div key={i.id} className='w-full h-30 flex p-5 items-start bg-white border border-gray-200 rounded-lg shadow z-auto '>
-                            <img src="https://www.creative-tim.com/learning-lab/tailwind-starter-kit/img/team-2-800x800.jpg" alt="..." class="shadow rounded-full w-10 h-10 align-middle border-none" />
+                            <img src={i.profilePic} alt="..." class="shadow rounded-full w-10 h-10 align-middle border-none" />
                             <div className='w-full flex justify-between items-center '>
                                 <div className='pl-2'>
                                     <h2 className='text-lg font-bold '> {i.name.length<16 ? i.name : i.name.substring(0,16)+'...' }</h2>

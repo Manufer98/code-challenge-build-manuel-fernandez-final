@@ -13,6 +13,7 @@ import axios from '@/lib/axios';
 import { storage, db } from '../../../../config/firebase'
 import { getDownloadURL, ref, uploadBytes } from 'firebase/storage'
 import { ref as refren, push } from 'firebase/database'
+import AddressForm from '../../address/AddressForm';
 
 const page = () => {
   const [roundedPic, setRoundedPic] = useState('');
@@ -23,6 +24,7 @@ const page = () => {
   const [selectedImages, setSelectedImages] = useState([]);
   const [selectedPicture, setSelectedPicture] = useState('');
   const id = useId()
+  const [address,setAddress]=useState('')
   const noPhoto = 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQQyIUo7o9OTjhLasrpJkfCnrShHn07dHbCNDbW76bt4Q&s'
 
 
@@ -50,6 +52,8 @@ const page = () => {
 
 
   };
+
+  
 
   const handleUpload = async () => {
     setIsLoading(true);
@@ -85,6 +89,7 @@ const page = () => {
 
 
   const onSubmit = async (values, actions) => {
+    console.log('holi')
 
     const profile=selectedPicture.length>0 ? selectedPicture : noPhoto;
 
@@ -92,7 +97,7 @@ const page = () => {
       user_id: user.id,
       name: values.name,
       title: values.title,
-      address: values.address,
+      address: address.length>0 ? address : ' ',
       profilePic: profile,
       phone: values.phone,
       email: values.email
@@ -101,7 +106,7 @@ const page = () => {
     axios.post('http://127.0.0.1:8000/api/contact/create', contact).then((response) => {
       console.log(response)
       push('/dashboard')
-    });
+    }).catch(e=>console.log(e));
 
  
 
@@ -205,10 +210,10 @@ const page = () => {
               {/* {errors.profilePic && touched.profilePic && <p className='text-red-500'>{errors.profilePic}</p>} */}
             </div>
           </div>
+          
           <div className='sm:basis-2/4 w-full flex flex-col items-center justify-center'>
-            <div>
+           {/*  <div>
               <h5 className='font-medium'>Address</h5>
-              {/* <ReactGoogleAutocomplete /> */}
               <input
                 value={values.address}
                 onChange={handleChange}
@@ -218,7 +223,17 @@ const page = () => {
                 className={errors.address && touched.address ? "w-50 border-2  bg-gray-200 appearance-none  border-red-500 rounded  py-2 px-2 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500" : "w-50 bg-gray-200 appearance-none border-2 border-gray-200 rounded  py-2 px-2 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500"}
               />
               {errors.address && touched.address && <p className='text-red-500'>{errors.address}</p>}
-            </div>
+            </div> */}
+            <div>
+             <h5 className='font-medium'>Address</h5>
+            <AddressForm 
+          
+          address={address}
+          setAddress={setAddress}
+        
+        
+        />
+        </div>
 
 
             <div>

@@ -10,6 +10,7 @@ import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import axios from '@/lib/axios';
 import { useSelector } from 'react-redux';
+import AddressForm from '../../../address/AddressForm';
 import { storage } from '../../../../../config/firebase'
 import { getDownloadURL, ref, uploadBytes } from 'firebase/storage'
 const page = ({ params }) => {
@@ -21,6 +22,7 @@ const page = ({ params }) => {
   const [selectedImages, setSelectedImages] = useState([]);
   const [selectedPicture, setSelectedPicture] = useState(contact.profilePic);
   const id = useId()
+  const [address,setAddress]=useState(contact.address)
 
   const onSubmit = async (values, actions) => {
 
@@ -30,7 +32,7 @@ const page = ({ params }) => {
       name: values.name,
       title: values.title,
       profilePic: selectedPicture,
-      address: values.address,
+      address: address?.length>0 ? address : ' ',
       phone: values.phone,
       email: values.email
     }
@@ -56,7 +58,7 @@ const page = ({ params }) => {
       name: contact.name,
       title: contact.title,
       profilePic: contact.profilePic,
-      address: contact.address,
+      address: address.length>0 ? address : ' ',
       phone: contact.phone,
       email: contact.email,
     },
@@ -204,19 +206,16 @@ const page = ({ params }) => {
             </div>
 
             <div className='sm:basis-2/4 flex flex-col items-center justify-center'>
-              <div>
-                <h5 className='font-medium'>Address</h5>
-                {/* <ReactGoogleAutocomplete /> */}
-                <input
-                  value={values.address}
-                  onChange={handleChange}
-                  onBlur={handleBlur}
-                  id="address"
-                  type="text"
-                  className={errors.address && touched.address ? "w-50 border-2  bg-gray-200 appearance-none  border-red-500 rounded  py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500" : "w-50 bg-gray-200 appearance-none border-2 border-gray-200 rounded  py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500"}
-                />
-                {errors.address && touched.address && <p className='text-red-500'>{errors.address}</p>}
-              </div>
+            <div>
+             <h5 className='font-medium'>Address</h5>
+            <AddressForm 
+          
+          address={address}
+          setAddress={setAddress}
+        
+        
+        />
+        </div>
 
 
               <div>

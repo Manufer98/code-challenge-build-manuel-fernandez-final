@@ -16,7 +16,7 @@ export const addContactSchema = yup.object().shape({
   name: yup.string().required("Required"),
   title: yup.string().required("Required"),
   profilePic: yup.string(),
-  address: yup.string().required("Required"),
+ /*  address: yup.string().required("Required"), */
   phone: yup.string().required("Required"),
     
   

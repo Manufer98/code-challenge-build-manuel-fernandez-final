@@ -3,14 +3,15 @@ import React from 'react'
 import Link from 'next/link'
 import { useState, useEffect } from 'react'
 import { InitalContacts } from '../redux/slices/contactsSlice'
-import { useDispatch, useSelector } from 'react-redux'
+import { useDispatch } from 'react-redux'
 const page = () => {
   const [contactsAp, setContactsAp] = useState([])
   const [loading, setLoading] = useState(true);
   const [noData, setNodata] = useState(false);
   const [onError, setOnError] = useState(false);
   const dispatch = useDispatch();
-  const contactsRedux = useSelector((state) => state.contacts);
+
+
   useEffect(() => {
     getData();
   }, [])
@@ -71,7 +72,7 @@ const page = () => {
               <h4 className='text-gray-400'>Title</h4>
 
             </div>
-            <Link href={`contacts/edit/${i.id}`}  className='relative'>
+            <Link href={`contacts/edit/${i.id}`} className='relative'>
               <svg xmlns="http://www.w3.org/2000/svg" className='w-5 h-5 fill-none stroke-gray-400 stroke-2 pl-1 z-0 ' strokeLinecap="round" strokeLinejoin="round"><path d="M9 18l6-6-6-6" /></svg>
 
             </Link>

@@ -2,14 +2,13 @@ import React from 'react'
 import AutoCompleteInput from './AutoCompleteInput';
 
 
+
 const AddressForm = ({address, setAddress}) => {
 
     const handleManualInputChange = (event, stateProperty) => {
       
         const newAddress = { ...address };
-        newAddress[stateProperty] = event.target.value;
-        console.log(newAddress);
-    
+        newAddress[stateProperty] = event.target.value;    
         setAddress(newAddress.address);
       };
 

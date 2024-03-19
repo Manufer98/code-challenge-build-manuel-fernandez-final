@@ -1,6 +1,6 @@
 'use client'
 
-import React, {  useId, useState, useEffect } from 'react'
+import React, { useId, useState, useEffect } from 'react'
 import { useFormik } from 'formik';
 import { addContactSchema } from '@/app/(auth)/schema/yup';
 import { ToastContainer, toast } from 'react-toastify'
@@ -22,7 +22,7 @@ const page = ({ params }) => {
   const [selectedImages, setSelectedImages] = useState([]);
   const [selectedPicture, setSelectedPicture] = useState(contact.profilePic);
   const id = useId()
-  const [address,setAddress]=useState(contact.address)
+  const [address, setAddress] = useState(contact.address)
 
   const onSubmit = async (values, actions) => {
 
@@ -32,12 +32,12 @@ const page = ({ params }) => {
       name: values.name,
       title: values.title,
       profilePic: selectedPicture,
-      address: address?.length>0 ? address : ' ',
+      address: address,
       phone: values.phone,
       email: values.email
     }
 
-    axios.put(`http://127.0.0.1:8000/api/contact/${params.id}/update`,contact).then((response) => {
+    axios.put(`http://127.0.0.1:8000/api/contact/${params.id}/update`, contact).then((response) => {
       push('/dashboard')
 
     });
@@ -58,7 +58,7 @@ const page = ({ params }) => {
       name: contact.name,
       title: contact.title,
       profilePic: contact.profilePic,
-      address: address.length>0 ? address : ' ',
+      address: contact.address,
       phone: contact.phone,
       email: contact.email,
     },
@@ -79,15 +79,7 @@ const page = ({ params }) => {
       updatedSelectedImages.push(files[i]);
       updatedSelectedImageNames.push(files[i].name);
     }
-
-    //console.log(updatedSelectedImages)
-
     setSelectedImages(updatedSelectedImages);
-
-
-
-
-
   };
 
   const handleUpload = async () => {
@@ -96,16 +88,12 @@ const page = ({ params }) => {
     if (selectedImages.length > 0) {
       for (let i = 0; i < selectedImages.length; i++) {
         const image = selectedImages[i];
-        const imageRef = ref(storage, image.name+id);
+        const imageRef = ref(storage, image.name + id);
 
         try {
           const snapshot = await uploadBytes(imageRef, image);
           const downloadUrl = await getDownloadURL(snapshot.ref);
-          console.log(snapshot, downloadUrl);
           setSelectedPicture(downloadUrl);
-
-          //const imagesRef = refren(db, 'images');
-          //push(imagesRef, { imageUrl: downloadUrl, timestamp: new Date().getTime() });
           toast.success('image uploaded', {
             position: 'top-center',
             autoClose: 3000,
@@ -115,7 +103,7 @@ const page = ({ params }) => {
           setIsLoading(false);
         } catch (e) {
           setIsLoading(false);
-          console.log('error uploading image:', e)
+          ('error uploading image:', e)
         }
       }
     } else {
@@ -131,7 +119,7 @@ const page = ({ params }) => {
       push('/dashboard')
     });
 
-   
+
   }
 
   return (
@@ -158,7 +146,7 @@ const page = ({ params }) => {
 
 
         <div className='flex items-center justify-center pt-5'>
-          <div className=' w-3/4 h-40 flex flex-col items-center justify-center pt-48  bg-gray-200 w-50 h-50 rounded-lg relative'>
+          <div className=' w-3/4 h-40 flex flex-col items-center justify-center pt-48  bg-gray-200  h-50 rounded-lg relative'>
 
             <img className="shadow rounded-full w-24 h-24 border-solid border-2 border-black  " src={selectedPicture} alt="..." />
             <h2 className='text-xl font-bold'>{contact.name}</h2>
@@ -180,7 +168,7 @@ const page = ({ params }) => {
                   onBlur={handleBlur}
                   id="name"
                   type="text"
-                  className={errors.name && touched.name ? "w-50 border-2  bg-gray-200 appearance-none  border-red-500 rounded  py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500" : "w-50 bg-gray-200 appearance-none border-2 border-gray-200 rounded  py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500"}
+                  className={errors.name && touched.name ? " border-2  bg-gray-200 appearance-none  border-red-500 rounded  py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500" : " bg-gray-200 appearance-none border-2 border-gray-200 rounded  py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500"}
                 />
                 {errors.name && touched.name && <p className='text-red-500'>{errors.name}</p>}
               </div>
@@ -193,7 +181,7 @@ const page = ({ params }) => {
                   onBlur={handleBlur}
                   id="title"
                   type="text"
-                  className={errors.title && touched.title ? "w-50 border-2  bg-gray-200 appearance-none  border-red-500 rounded  py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500" : "w-50 bg-gray-200 appearance-none border-2 border-gray-200 rounded  py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500"}
+                  className={errors.title && touched.title ? " border-2  bg-gray-200 appearance-none  border-red-500 rounded  py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500" : " bg-gray-200 appearance-none border-2 border-gray-200 rounded  py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500"}
                 />
                 {errors.title && touched.title && <p className='text-red-500'>{errors.title}</p>}
               </div>
@@ -205,17 +193,15 @@ const page = ({ params }) => {
               </div>
             </div>
 
-            <div className='sm:basis-2/4 flex flex-col items-center justify-center'>
-            <div>
-             <h5 className='font-medium'>Address</h5>
-            <AddressForm 
-          
-          address={address}
-          setAddress={setAddress}
-        
-        
-        />
-        </div>
+            <div className='sm:basis-2/4 w-full flex flex-col items-center justify-center'>
+             
+              <div>
+                <h5 className='font-medium'>Address</h5>
+                <AddressForm
+                  address={address}
+                  setAddress={setAddress}
+                />
+              </div>
 
 
               <div>
@@ -226,7 +212,7 @@ const page = ({ params }) => {
                   onBlur={handleBlur}
                   id="phone"
                   type="text"
-                  className={errors.phone && touched.phone ? "w-50 border-2  bg-gray-200 appearance-none  border-red-500 rounded  py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500" : "w-50 bg-gray-200 appearance-none border-2 border-gray-200 rounded  py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500"}
+                  className={errors.phone && touched.phone ? " border-2  bg-gray-200 appearance-none  border-red-500 rounded  py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500" : " bg-gray-200 appearance-none border-2 border-gray-200 rounded  py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500"}
                 />
                 {errors.phone && touched.phone && <p className='text-red-500'>{errors.phone}</p>}
               </div>
@@ -240,7 +226,7 @@ const page = ({ params }) => {
                   onBlur={handleBlur}
                   id="email"
                   type="email"
-                  className={errors.email && touched.email ? "w-50 border-2  bg-gray-200 appearance-none  border-red-500 rounded  py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500" : "w-50 bg-gray-200 appearance-none border-2 border-gray-200 rounded  py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500"}
+                  className={errors.email && touched.email ? " border-2  bg-gray-200 appearance-none  border-red-500 rounded  py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500" : " bg-gray-200 appearance-none border-2 border-gray-200 rounded  py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500"}
                 />
                 {errors.email && touched.email && <p className='text-red-500'>{errors.email}</p>}
               </div>

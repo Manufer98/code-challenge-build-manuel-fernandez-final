@@ -34,7 +34,7 @@ const Page = () => {
 
     return (
         <form onSubmit={submitForm}>
-            {/* Name */}
+           
             <div>
                 <Label htmlFor="name">Name</Label>
 
@@ -51,7 +51,7 @@ const Page = () => {
                 <InputError messages={errors.name} className="mt-2" />
             </div>
 
-            {/* Email Address */}
+            
             <div className="mt-4">
                 <Label htmlFor="email">Email</Label>
 
@@ -67,7 +67,7 @@ const Page = () => {
                 <InputError messages={errors.email} className="mt-2" />
             </div>
 
-            {/* Password */}
+            
             <div className="mt-4">
                 <Label htmlFor="password">Password</Label>
 
@@ -84,7 +84,7 @@ const Page = () => {
                 <InputError messages={errors.password} className="mt-2" />
             </div>
 
-            {/* Confirm Password */}
+            
             <div className="mt-4">
                 <Label htmlFor="passwordConfirmation">
                     Confirm Password

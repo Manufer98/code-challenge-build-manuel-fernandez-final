@@ -17,7 +17,7 @@ return new class extends Migration
             $table->string('name');
             $table->string('title');
             $table->string('profilePic')->nullable(true);
-            $table->string('address');
+            $table->string('address')->nullable(true);
             $table->string('phone');
             $table->string('email');
             $table->timestamps();

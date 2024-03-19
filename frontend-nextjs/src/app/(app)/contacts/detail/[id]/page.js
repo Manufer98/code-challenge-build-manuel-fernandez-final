@@ -9,9 +9,6 @@ const page = ({ params }) => {
   const contact = contacts.reduce((acc, cur, i) => (acc = cur), {});
   
 
-
-  console.log(contact);
-
   return (
     <div>
 
@@ -37,7 +34,7 @@ const page = ({ params }) => {
 
 
         <div className='flex items-center justify-center pt-5'>
-          <div className=' w-3/4 h-40 flex flex-col items-center justify-center pt-48  bg-gray-200 w-50 h-50 rounded-lg relative'>
+          <div className=' w-3/4 h-40 flex flex-col items-center justify-center pt-48  bg-gray-200  h-50 rounded-lg relative'>
 
             <img className="shadow rounded-full w-24 h-24 border-solid border-2 border-black  " src={contact.profilePic} alt="..." />
             <h2 className='text-xl font-bold'>{contact.name}</h2>
@@ -52,7 +49,7 @@ const page = ({ params }) => {
 
           <form  className='flex flex-row flex-wrap items-start justify-start  '>
 
-            <div className='basis-2/4 w-full flex flex-col  items-start justify-start '>
+            <div className=' w-full flex flex-col  items-start justify-start '>
               <div>
                 <h5 className='font-medium text-lg'>Name</h5>
                 <h3 className=''>{contact.name}</h3>
@@ -63,24 +60,23 @@ const page = ({ params }) => {
                 <h5 className='font-medium text-lg'>Title</h5>
                 <h3 className=''>{contact.title}</h3>
               </div>
-
-
-              
+            
             </div>
 
-            <div className='basis-2/4 w-full flex flex-col  items-start justify-start  '>
+            
+            <div className=' w-full flex flex-col  items-start justify-start  '>
+              {contact.address &&
               <div>
                 <h5 className='font-medium text-lg'>Address</h5>
-                {/* <ReactGoogleAutocomplete /> */}
-                
                 <h3 className='text-gray'>{contact.address}</h3>
               </div>
+              }
+            
 
 
               <div>
                 <h5 className='font-medium text-lg'>Phone</h5>
                 <h3 className=''>{contact.phone}</h3>
-               
               </div>
 
 
@@ -89,10 +85,6 @@ const page = ({ params }) => {
                 <h3 className=''>{contact.email}</h3>
               </div>
             </div>
-
-
-            
-
           </form>
         </div>
 

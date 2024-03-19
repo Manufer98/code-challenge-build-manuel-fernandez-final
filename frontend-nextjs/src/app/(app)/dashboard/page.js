@@ -7,10 +7,7 @@ import { InitalContacts } from '@/app/redux/slices/contactsSlice'
 import { useDispatch } from 'react-redux'
 import { useAuth } from '@/hooks/auth'
 
-/* export const metadata = {
-    title: 'Laravel - Dashboard',
-}
- */
+
 const Dashboard = () => {
     const [contactsAp, setContactsAp] = useState([])
     const [loading, setLoading] = useState(true);
@@ -18,6 +15,7 @@ const Dashboard = () => {
     const [onError, setOnError] = useState(false);
     const dispatch = useDispatch();
     const { user } = useAuth({ middleware: 'auth' })
+
     useEffect(() => {
         getData();
     }, [])
@@ -42,7 +40,7 @@ const Dashboard = () => {
     return (
         < div className='bg-secondary '>
             <Header title="Contacts App" />
-            
+
             <div className='h-screen bg-secondary'>
                 <form className=" p-10">
                     <div className='flex justify-between items-center '>
@@ -76,8 +74,8 @@ const Dashboard = () => {
                             <img src={i.profilePic} alt="..." class="shadow rounded-full w-10 h-10 align-middle border-none" />
                             <div className='w-full flex justify-between items-center '>
                                 <div className='pl-2'>
-                                    <h2 className='text-lg font-bold '> {i.name.length<16 ? i.name : i.name.substring(0,16)+'...' }</h2>
-                                    <h4 className='text-gray-400'>{i.title.length<16 ? i.title : i.title.substring(0,16)+'...'}</h4>
+                                    <h2 className='text-lg font-bold '> {i.name.length < 16 ? i.name : i.name.substring(0, 16) + '...'}</h2>
+                                    <h4 className='text-gray-400'>{i.title.length < 16 ? i.title : i.title.substring(0, 16) + '...'}</h4>
 
                                 </div>
                                 <Link href={`contacts/detail/${i.id}`} className=''>

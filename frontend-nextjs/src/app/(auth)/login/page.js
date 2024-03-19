@@ -4,7 +4,6 @@ import Button from '@/components/Button'
 import Input from '@/components/Input'
 import InputError from '@/components/InputError'
 import Label from '@/components/Label'
-import Link from 'next/link'
 import { useAuth } from '@/hooks/auth'
 import { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
@@ -46,12 +45,12 @@ const Login = () => {
 
     return (
         <div className='flex w-full h-full flex-col items-center justify-center  '>
-            
-             <h1 className='text-3xl m-5 font-extrabold'>Welcome</h1>
+
+            <h1 className='text-3xl m-5 font-extrabold'>Welcome</h1>
             <AuthSessionStatus className="mb-4" status={status} />
             <form onSubmit={submitForm}>
 
-             
+
                 <div>
                     <Label htmlFor="email" className='font-bold'>Email</Label>
 
@@ -59,8 +58,8 @@ const Login = () => {
                         id="email"
                         type="email"
                         value={email}
-                        placeholder="john@doe.com" 
-                        className="w-50 bg-pink appearance-none  rounded  py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500"
+                        placeholder="john@doe.com"
+                        className=" bg-pink appearance-none  rounded  py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500"
                         onChange={event => setEmail(event.target.value)}
                         required
                         autoFocus
@@ -69,7 +68,7 @@ const Login = () => {
                     <InputError messages={errors.email} className="mt-2" />
                 </div>
 
-              
+
                 <div className="mt-4 ">
                     <Label htmlFor="password" className='font-bold'>Password</Label>
 
@@ -90,7 +89,7 @@ const Login = () => {
                     />
                 </div>
 
-               
+
 
                 <div className="flex items-center justify-center mt-4">
 

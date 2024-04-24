@@ -13,6 +13,8 @@ import { useSelector } from 'react-redux';
 import AddressForm from '../../../address/AddressForm';
 import { storage } from '../../../../../config/firebase'
 import { getDownloadURL, ref, uploadBytes } from 'firebase/storage'
+import PopUpDelete from './PopUpDelete';
+import Input from '../../components/Input';
 const page = ({ params }) => {
   const contactsRedux = useSelector((state) => state.contacts.contacts);
   const contacts = contactsRedux.filter(i => i.id === parseInt(params.id));
@@ -23,6 +25,7 @@ const page = ({ params }) => {
   const [selectedPicture, setSelectedPicture] = useState(contact.profilePic);
   const id = useId()
   const [address, setAddress] = useState(contact.address)
+  const [popUpDelete, setPopUpDelete] = useState(false);
 
   const onSubmit = async (values, actions) => {
 
@@ -37,7 +40,7 @@ const page = ({ params }) => {
       email: values.email
     }
 
-    axios.put(`http://127.0.0.1:8000/api/contact/${params.id}/update`, contact).then((response) => {
+    axios.put(`/api/contact/${params.id}`, contact).then((response) => {
       push('/dashboard')
 
     });
@@ -113,11 +116,17 @@ const page = ({ params }) => {
   }
 
 
-  const handleDelete = () => {
-
-    axios.delete(`http://127.0.0.1:8000/api/contact/${params.id}/delete`).then((response) => {
+  const handleDelete = (id) => {
+    axios.delete(`/api/contact/${id}`).then((response) => {
       push('/dashboard')
     });
+
+
+  }
+
+  const handlePopUpDelete = () => {
+    setPopUpDelete(!popUpDelete);
+
 
 
   }
@@ -125,6 +134,7 @@ const page = ({ params }) => {
   return (
     <div>
       <ToastContainer />
+      {popUpDelete && <PopUpDelete setPopUpDelete={setPopUpDelete} onDelete={handleDelete} id={params.id} />}
 
       <div className='h-screen bg-secondary'>
         <div className='bg-pink h-16 flex justify-between'>
@@ -135,7 +145,7 @@ const page = ({ params }) => {
             <span>Back</span>
           </Link>
           <button
-            onClick={handleDelete}
+            onClick={handlePopUpDelete}
             className="bg-primary hover:bg-blue-700 text-white font-bold py-2  px-12 rounded-full m-3 "
           >
             Delete</button>
@@ -160,7 +170,11 @@ const page = ({ params }) => {
           <form onSubmit={handleSubmit} className='flex flex-row flex-wrap items-center justify-center  border-dashed border-red-500'>
 
             <div className='sm:basis-2/4 w-full flex flex-col items-center justify-center'>
-              <div>
+
+              <Input onChange={handleChange} id='name' title='Name'
+                onBlur={handleBlur} value={values.name} errors={errors.name} touched={touched.name} />
+
+              {/* <div>
                 <h5 className='font-medium'>Name</h5>
                 <input
                   value={values.name}
@@ -171,9 +185,12 @@ const page = ({ params }) => {
                   className={errors.name && touched.name ? " border-2  bg-gray-200 appearance-none  border-red-500 rounded  py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500" : " bg-gray-200 appearance-none border-2 border-gray-200 rounded  py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500"}
                 />
                 {errors.name && touched.name && <p className='text-red-500'>{errors.name}</p>}
-              </div>
+              </div> */}
 
-              <div>
+              <Input onChange={handleChange} id='title' title='Title'
+                onBlur={handleBlur} value={values.title} errors={errors.title} touched={touched.title} />
+
+              {/* <div>
                 <h5 className='font-medium'>Title</h5>
                 <input
                   value={values.title}
@@ -184,7 +201,7 @@ const page = ({ params }) => {
                   className={errors.title && touched.title ? " border-2  bg-gray-200 appearance-none  border-red-500 rounded  py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500" : " bg-gray-200 appearance-none border-2 border-gray-200 rounded  py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500"}
                 />
                 {errors.title && touched.title && <p className='text-red-500'>{errors.title}</p>}
-              </div>
+              </div> */}
 
 
               <div>
@@ -194,7 +211,7 @@ const page = ({ params }) => {
             </div>
 
             <div className='sm:basis-2/4 w-full flex flex-col items-center justify-center'>
-             
+
               <div>
                 <h5 className='font-medium'>Address</h5>
                 <AddressForm
@@ -203,8 +220,10 @@ const page = ({ params }) => {
                 />
               </div>
 
+              <Input onChange={handleChange} id='phone' title='Phone'
+                onBlur={handleBlur} value={values.phone} errors={errors.phone} touched={touched.phone} />
 
-              <div>
+              {/*  <div>
                 <h5 className='font-medium'>Phone</h5>
                 <input
                   value={values.phone}
@@ -215,10 +234,15 @@ const page = ({ params }) => {
                   className={errors.phone && touched.phone ? " border-2  bg-gray-200 appearance-none  border-red-500 rounded  py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500" : " bg-gray-200 appearance-none border-2 border-gray-200 rounded  py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500"}
                 />
                 {errors.phone && touched.phone && <p className='text-red-500'>{errors.phone}</p>}
-              </div>
+              </div> */}
+
+              <Input onChange={handleChange} id='email' title='Email'
+                onBlur={handleBlur} value={values.email} errors={errors.email} touched={touched.email} />
 
 
-              <div>
+
+
+              {/*    <div>
                 <h5 className='font-medium'>Email</h5>
                 <input
                   value={values.email}
@@ -229,7 +253,9 @@ const page = ({ params }) => {
                   className={errors.email && touched.email ? " border-2  bg-gray-200 appearance-none  border-red-500 rounded  py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500" : " bg-gray-200 appearance-none border-2 border-gray-200 rounded  py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500"}
                 />
                 {errors.email && touched.email && <p className='text-red-500'>{errors.email}</p>}
-              </div>
+              </div> */}
+
+
             </div>
 
 

@@ -11,6 +11,7 @@ import axios from '@/lib/axios';
 import { storage } from '../../../../config/firebase'
 import { getDownloadURL, ref, uploadBytes } from 'firebase/storage'
 import AddressForm from '../../address/AddressForm';
+import Input from '../components/Input';
 
 const page = () => {
   const { push } = useRouter();
@@ -95,7 +96,7 @@ const page = () => {
       phone: values.phone,
       email: values.email
     }
-    axios.post('http://127.0.0.1:8000/api/contact/create', contact).then((response) => {
+    axios.post('/api/contact', contact).then((response) => {
       push('/dashboard')
     }).catch(e => console.log(e));
 
@@ -157,21 +158,15 @@ const page = () => {
 
         <form onSubmit={handleSubmit} className='flex flex-row flex-wrap  border-dashed border-red-500'>
           <div className='sm:basis-2/4 w-full  flex flex-col items-center justify-center'>
-            <div>
-              <h5 className='font-medium'>Name</h5>
-              <input
-                value={values.name}
-                onChange={handleChange}
-                onBlur={handleBlur}
-                
-                id="name"
-                type="text"
-                className={errors.name && touched.name ? " border-2  bg-gray-200 appearance-none  border-red-500 rounded  py-2 px-2 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500" : "w-full bg-gray-200 appearance-none border-2 border-gray-200 rounded  py-2 px-2 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500"}
-              />
-              {errors.name && touched.name && <p className='text-red-500'>{errors.name}</p>}
-            </div>
 
-            <div>
+
+            <Input onChange={handleChange} id='name' title='Name'
+              onBlur={handleBlur} value={values.name} errors={errors.name} touched={touched.name} />
+
+            <Input onChange={handleChange} id='title' title='Title'
+              onBlur={handleBlur} value={values.title} errors={errors.title} touched={touched.title} />
+
+            {/* <div>
               <h5 className='font-medium'>Title</h5>
               <input
                 value={values.title}
@@ -182,7 +177,7 @@ const page = () => {
                 className={errors.title && touched.title ? " border-2  bg-gray-200 appearance-none  border-red-500 rounded  py-2 px-2 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500" : " bg-gray-200 appearance-none border-2 border-gray-200 rounded  py-2 px-2 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500"}
               />
               {errors.title && touched.title && <p className='text-red-500'>{errors.title}</p>}
-            </div>
+            </div> */}
 
 
             <div>
@@ -204,22 +199,15 @@ const page = () => {
               />
             </div>
 
-
-            <div>
-              <h5 className='font-medium'>Phone</h5>
-              <input
-                value={values.phone}
-                onChange={handleChange}
-                onBlur={handleBlur}
-                id="phone"
-                type="text"
-                className={errors.phone && touched.phone ? " border-2  bg-gray-200 appearance-none  border-red-500 rounded  py-2 px-2 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500" : " bg-gray-200 appearance-none border-2 border-gray-200 rounded  py-2 px-2 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500"}
-              />
-              {errors.phone && touched.phone && <p className='text-red-500'>{errors.phone}</p>}
-            </div>
+            <Input onChange={handleChange} id='phone' title='Phone'
+              onBlur={handleBlur} value={values.phone} errors={errors.phone} touched={touched.phone} />
 
 
-            <div>
+
+            <Input onChange={handleChange} id='email' title='Email'
+              onBlur={handleBlur} value={values.email} errors={errors.email} touched={touched.email} />
+
+            {/*   <div>
               <h5 className='font-medium'>Email</h5>
               <input
                 value={values.email}
@@ -230,7 +218,7 @@ const page = () => {
                 className={errors.email && touched.email ? " border-2  bg-gray-200 appearance-none  border-red-500 rounded  py-2 px-2 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500" : " bg-gray-200 appearance-none border-2 border-gray-200 rounded  py-2 px-2 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500"}
               />
               {errors.email && touched.email && <p className='text-red-500'>{errors.email}</p>}
-            </div>
+            </div> */}
           </div>
           <div className=' w-full flex justify-center pt-5'>
             <button

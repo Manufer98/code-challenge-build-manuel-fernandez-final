@@ -20,7 +20,7 @@ Route::middleware(['auth:sanctum'])->get('/user', function (Request $request) {
 
 
 Route::get('/contacts/{user_id}', 'App\Http\Controllers\ContactsController@index');
-Route::post('/contact/create','App\Http\Controllers\ContactsController@create');
+Route::post('/contact','App\Http\Controllers\ContactsController@create');
 /* Route::get('/contact/{id}/edit','App\Http\Controllers\ContactsController@edit'); */
-Route::put('/contact/{id}/update','App\Http\Controllers\ContactsController@update');
-Route::delete('/contact/{id}/delete','App\Http\Controllers\ContactsController@delete');
+Route::put('/contact/{id}','App\Http\Controllers\ContactsController@update');
+Route::delete('/contact/{id}','App\Http\Controllers\ContactsController@delete');

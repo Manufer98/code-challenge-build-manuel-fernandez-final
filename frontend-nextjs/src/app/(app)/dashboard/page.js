@@ -2,6 +2,7 @@
 import Header from '@/app/(app)/Header'
 import React from 'react'
 import Link from 'next/link'
+import axios from '@/lib/axios';
 import { useState, useEffect } from 'react'
 import { InitalContacts } from '@/app/redux/slices/contactsSlice'
 import { useDispatch } from 'react-redux'
@@ -22,18 +23,18 @@ const Dashboard = () => {
 
 
     const getData = async () => {
-        const contactsApi = await fetch(`http://127.0.0.1:8000/api/contacts/${user?.id}`)
-            .then(res => res.json())
-            .then(data => {
-                dispatch(InitalContacts(data));
-                setContactsAp(data);
+        axios.get(`/api/contacts/${user?.id}`)
+            .then(res => {
+                dispatch(InitalContacts(res.data));
+                setContactsAp(res.data);
                 setLoading(false);
-                if (data.length === 0) {
+                if (res.data.length === 0) {
                     setNodata(true);
                 }
-            }).catch(data => {
+            }).catch(res => {
                 setOnError(true);
                 setLoading(false);
+                console.log(res);
 
             });
     }

@@ -1,12 +1,10 @@
 'use client'
-
 import React, { useId, useState, useEffect } from 'react'
 import { useFormik } from 'formik';
 import { addContactSchema } from '@/app/(auth)/schema/yup';
-import {  toast } from 'react-toastify'
+import { toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css';
 import { useRouter } from 'next/navigation';
-/* import ReactGoogleAutocomplete from 'react-google-autocomplete'; */
 import Link from 'next/link';
 import axios from '@/lib/axios';
 import { useSelector } from 'react-redux';
@@ -15,6 +13,8 @@ import { storage } from '../../../../../config/firebase'
 import { getDownloadURL, ref, uploadBytes } from 'firebase/storage'
 import PopUpDelete from './PopUpDelete';
 import Input from '../../components/Input';
+import GoBack from '@/components/GoBack';
+
 const page = ({ params }) => {
   const contactsRedux = useSelector((state) => state.contacts.contacts);
   const contacts = contactsRedux.filter(i => i.id === parseInt(params.id));
@@ -48,16 +48,15 @@ const page = ({ params }) => {
       })
       push('/dashboard')
 
-    }).catch(e=>{
-      console.log(e.response);
-      console.log(e.response.status);
-      if(e.response.status===422){
+    }).catch(e => {
+      
+      if (e.response.status === 422) {
         toast.error(e.response.data.message, {
           position: 'top-center',
           autoClose: 5000,
           theme: 'dark',
         })
-      }else{
+      } else {
         toast.error('Error Establishing a Database Connection', {
           position: 'top-center',
           autoClose: 5000,
@@ -65,7 +64,7 @@ const page = ({ params }) => {
         })
 
       }
-      
+
     });
 
   };
@@ -154,34 +153,22 @@ const page = ({ params }) => {
 
   const handlePopUpDelete = () => {
     setPopUpDelete(!popUpDelete);
-
-
-
   }
 
   return (
     <div>
-     
+
       {popUpDelete && <PopUpDelete setPopUpDelete={setPopUpDelete} onDelete={handleDelete} id={params.id} />}
 
       <div className='h-screen bg-secondary'>
         <div className='bg-pink h-16 flex justify-between'>
-          <Link href='/dashboard' type="button" className="flex items-center justify-center w-1/2 px-5 py-2 text-sm text-gray-700 transition-colors duration-200    gap-x-2 sm:w-auto ">
-            <svg className="w-5 h-5 rtl:rotate-180" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" d="M6.75 15.75L3 12m0 0l3.75-3.75M3 12h18" />
-            </svg>
-            <span>Back</span>
-          </Link>
+          <GoBack />
           <button
             onClick={handlePopUpDelete}
             className="bg-primary hover:bg-blue-700 text-white font-bold py-2  px-12 rounded-full m-3 "
           >
             Delete</button>
-
-
-
         </div>
-
 
         <div className='flex items-center justify-center pt-5'>
           <div className=' w-3/4 h-40 flex flex-col items-center justify-center pt-48  bg-gray-200  h-50 rounded-lg relative'>
@@ -194,18 +181,14 @@ const page = ({ params }) => {
         </div>
 
         <div className='flex items-center justify-center pt-24 '>
-
           <form onSubmit={handleSubmit} className='flex flex-row flex-wrap items-center justify-center  border-dashed border-red-500'>
-
             <div className='sm:basis-2/4 w-full flex flex-col items-center justify-center'>
 
               <Input onChange={handleChange} id='name' title='Name'
                 onBlur={handleBlur} value={values.name} errors={errors.name} touched={touched.name} />
 
-
               <Input onChange={handleChange} id='title' title='Title'
                 onBlur={handleBlur} value={values.title} errors={errors.title} touched={touched.title} />
-
 
               <div>
                 <h5 className='font-medium'>Profile Picture</h5>
@@ -230,7 +213,6 @@ const page = ({ params }) => {
                 onBlur={handleBlur} value={values.email} errors={errors.email} touched={touched.email} />
 
             </div>
-
 
             <div className=' w-full  flex items-start  justify-center pt-5'>
               <button

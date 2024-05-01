@@ -3,26 +3,26 @@ import AutoCompleteInput from './AutoCompleteInput';
 
 
 
-const AddressForm = ({address, setAddress}) => {
+const AddressForm = ({ address, setAddress }) => {
 
-    const handleManualInputChange = (event, stateProperty) => {
-      
-        const newAddress = { ...address };
-        newAddress[stateProperty] = event.target.value;    
-        setAddress(newAddress.address);
-      };
+  const handleManualInputChange = (event, stateProperty) => {
+
+    const newAddress = { ...address };
+    newAddress[stateProperty] = event.target.value;
+    setAddress(newAddress.address);
+  };
 
 
   return (
     <div >
-        <label htmlFor='address'>
-        <AutoCompleteInput  
-        address={address}
-        setAddress={setAddress}
-        handleManualInputChange={handleManualInputChange} 
+      <label htmlFor='address'>
+        <AutoCompleteInput
+          address={address}
+          setAddress={setAddress}
+          handleManualInputChange={handleManualInputChange}
         />
 
-        </label>
+      </label>
 
 
     </div>

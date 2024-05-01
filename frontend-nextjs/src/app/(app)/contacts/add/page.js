@@ -4,15 +4,15 @@ import { useFormik } from 'formik';
 import { addContactSchema } from '@/app/(auth)/schema/yup';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-
- import {  toast } from 'react-toastify'
-import 'react-toastify/dist/ReactToastify.css'; 
+import { toast } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css';
 import { useAuth } from '@/hooks/auth';
 import axios from '@/lib/axios';
 import { storage } from '../../../../config/firebase'
 import { getDownloadURL, ref, uploadBytes } from 'firebase/storage'
 import AddressForm from '../../address/AddressForm';
 import Input from '../components/Input';
+import GoBack from '@/components/GoBack';
 
 const page = () => {
   const { push } = useRouter();
@@ -76,7 +76,7 @@ const page = () => {
         }
       }
     } else {
-      //console.error('No images selected');
+
       setIsLoading(false);
     }
   }
@@ -98,16 +98,16 @@ const page = () => {
       email: values.email
     }
     axios.post('/api/contact', contact).then((response) => {
-     console.log(response.data);
-     toast.success('Contact Added', {
-      position: 'top-center',
-      autoClose: 5000,
-      theme: 'dark',
-    })
-   
-     
+
+      toast.success('Contact Added', {
+        position: 'top-center',
+        autoClose: 5000,
+        theme: 'dark',
+      })
+
+
       push('/dashboard')
-    }).catch(e =>{
+    }).catch(e => {
       toast.error(e.response.data.message, {
         position: 'top-center',
         autoClose: 5000,
@@ -115,13 +115,6 @@ const page = () => {
       })
 
     })
-      
-      
-      
-      
-    
-
-
 
   };
 
@@ -150,19 +143,10 @@ const page = () => {
 
   return (
     <div className='h-screen bg-secondary'>
-     
+
       <div className='bg-pink h-16 flex'>
-        <Link href='/dashboard' type="button" className="flex items-center justify-center w-1/2 px-5 py-2 text-sm text-gray-700 transition-colors duration-200    gap-x-2 sm:w-auto ">
-          <svg className="w-5 h-5 rtl:rotate-180" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor">
-            <path strokeLinecap="round" strokeLinejoin="round" d="M6.75 15.75L3 12m0 0l3.75-3.75M3 12h18" />
-          </svg>
-          <span>Back</span>
-        </Link>
-
-
+        <GoBack />
       </div>
-
-
 
       <div className='flex items-center justify-center pt-5'>
         <div className=' w-3/4 h-40 flex flex-col items-center justify-center pt-48  bg-gray-200  h-50 rounded-lg relative'>
@@ -171,16 +155,12 @@ const page = () => {
           <h2 className='text-xl font-bold'></h2>
           <h2 className='text-gray-400'></h2>
         </div>
-
       </div>
-
 
       <div className='flex  items-center justify-center pt-24'>
 
         <form onSubmit={handleSubmit} className='flex flex-row flex-wrap  border-dashed border-red-500'>
           <div className='sm:basis-2/4 w-full  flex flex-col items-center justify-center'>
-
-
             <Input onChange={handleChange} id='name' title='Name'
               onBlur={handleBlur} value={values.name} errors={errors.name} touched={touched.name} />
 
@@ -197,23 +177,18 @@ const page = () => {
             <div>
               <h5 className='font-medium'>Address</h5>
               <AddressForm
-
                 address={address}
                 setAddress={setAddress}
-
-
               />
             </div>
 
             <Input onChange={handleChange} id='phone' title='Phone'
               onBlur={handleBlur} value={values.phone} errors={errors.phone} touched={touched.phone} />
 
-
-
             <Input onChange={handleChange} id='email' title='Email'
               onBlur={handleBlur} value={values.email} errors={errors.email} touched={touched.email} />
-
           </div>
+
           <div className=' w-full flex justify-center pt-5'>
             <button
               onSubmit={onSubmit}

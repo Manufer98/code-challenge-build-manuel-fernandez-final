@@ -1,5 +1,8 @@
 import '@/app/global.css'
 import Providers from './redux/Provider'
+import 'react-toastify/dist/ReactToastify.css';
+import ToastContainerWrapper from '@/provider/toast';
+
 
 export const metadata = {
     title: 'Laravel',
@@ -7,9 +10,16 @@ export const metadata = {
 const RootLayout = ({ children }) => {
     return (
         <html lang="en">
+            
             <Providers>
-            <body className="antialiased">{children}</body>
+        
+            <body className="antialiased">{children}
+            <ToastContainerWrapper>
+            </ToastContainerWrapper>
+            </body>
+          
             </Providers>
+           
         </html>
     )
 }

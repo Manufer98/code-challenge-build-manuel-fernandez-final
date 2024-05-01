@@ -4,8 +4,9 @@ import { useFormik } from 'formik';
 import { addContactSchema } from '@/app/(auth)/schema/yup';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { ToastContainer, toast } from 'react-toastify'
-import 'react-toastify/dist/ReactToastify.css';
+
+ import { ToastContainer, toast } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css'; 
 import { useAuth } from '@/hooks/auth';
 import axios from '@/lib/axios';
 import { storage } from '../../../../config/firebase'
@@ -97,8 +98,28 @@ const page = () => {
       email: values.email
     }
     axios.post('/api/contact', contact).then((response) => {
+     console.log(response.data);
+     toast.success('Contact Added', {
+      position: 'top-center',
+      autoClose: 5000,
+      theme: 'dark',
+    })
+   
+     
       push('/dashboard')
-    }).catch(e => console.log(e));
+    }).catch(e =>{
+      toast.error(e.response.data.message, {
+        position: 'top-center',
+        autoClose: 5000,
+        theme: 'dark',
+      })
+
+    })
+      
+      
+      
+      
+    
 
 
 

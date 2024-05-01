@@ -4,9 +4,11 @@ import React from 'react'
 import Link from 'next/link'
 import axios from '@/lib/axios';
 import { useState, useEffect } from 'react'
-import { InitalContacts } from '@/app/redux/slices/contactsSlice'
+import { GetContacts } from '@/app/redux/slices/contactsSlice'
 import { useDispatch } from 'react-redux'
 import { useAuth } from '@/hooks/auth'
+import {  toast } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css';
 
 
 const Dashboard = () => {
@@ -24,11 +26,12 @@ const Dashboard = () => {
 
     const getData = async () => {
         axios.get(`/api/contacts/${user?.id}`)
-            .then(res => {
-                dispatch(InitalContacts(res.data));
-                setContactsAp(res.data);
+            .then(response=> {
+                const { data } = response;
+                dispatch(GetContacts(data)); 
+                setContactsAp(data);
                 setLoading(false);
-                if (res.data.length === 0) {
+                if (data.length === 0) {
                     setNodata(true);
                 }
             }).catch(res => {
@@ -41,6 +44,12 @@ const Dashboard = () => {
     return (
         < div className='bg-secondary '>
             <Header title="Contacts App" />
+            
+            <button onClick={()=>toast.success('image uploaded', {
+            position: 'top-center',
+            autoClose: 3000,
+            theme: 'dark',
+          })}>toast</button>
 
             <div className='h-screen bg-secondary'>
                 <form className=" p-10">

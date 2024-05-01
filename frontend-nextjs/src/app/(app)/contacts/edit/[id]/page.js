@@ -43,6 +43,24 @@ const page = ({ params }) => {
     axios.put(`/api/contact/${params.id}`, contact).then((response) => {
       push('/dashboard')
 
+    }).catch(e=>{
+      console.log(e.response);
+      console.log(e.response.status);
+      if(e.response.status===422){
+        toast.error(e.response.data.message, {
+          position: 'top-center',
+          autoClose: 5000,
+          theme: 'dark',
+        })
+      }else{
+        toast.error('Error Establishing a Database Connection', {
+          position: 'top-center',
+          autoClose: 5000,
+          theme: 'dark',
+        })
+
+      }
+      
     });
 
   };
@@ -118,6 +136,11 @@ const page = ({ params }) => {
 
   const handleDelete = (id) => {
     axios.delete(`/api/contact/${id}`).then((response) => {
+      toast.success('Contact deleted', {
+        position: 'top-center',
+        autoClose: 3000,
+        theme: 'dark',
+      })
       push('/dashboard')
     });
 

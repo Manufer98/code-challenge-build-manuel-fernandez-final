@@ -5,54 +5,43 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Contact;
+use App\Services\ContactService;
 
 class ContactsController extends Controller
 {
-    //
-
-    
 
 
     public function index($user_id){
-        $contacts = Contact::all()->where('user_id', '=', $user_id)->values();
-        return response()->json($contacts);
+        $getcontacts=(new ContactService)->getContacts($user_id);
+        return $getcontacts;
     }
 
     public function create(Request $request){
-        $contact=Contact::create([
-            'user_id'=> $request ->user_id,
-            'name'=>    $request ->name,
-            'title' =>    $request ->title,
-            'profilePic' =>    $request ->profilePic,
-            'address' =>    $request ->address,
-            'phone' =>    $request ->phone,
-            'email' =>    $request ->email,
-
-            
+        $validated = $request->validate([
+            'name' => 'required|max:255',
+            'title' => 'required|max:255',
+            'phone' => 'required|max:255',
+            'email' => 'required|email',
         ]);
-        return response()->json($contact);
+        $uploadcontact=(new ContactService)->storeContact($request);
+        return  $uploadcontact;
     }
 
-    /* public function edit($id){
-        $contact=Contact::find($id);
-        return response()->json($contact);
-    } */
-
+    
     public function update(Request $request,$id){
-        $contact=Contact::findOrFail($id)->update([
-            'name'=> $request -> name,
-            'title' =>    $request ->title,
-            'profilePic' =>    $request ->profilePic,
-            'address' =>    $request ->address,
-            'phone' =>    $request ->phone,
-            'email' =>    $request ->email,
+        $validated = $request->validate([
+            'name' => 'required|max:255',
+            'title' => 'required|max:255',
+            'phone' => 'required|max:255',
+            'email' => 'required|email',
+           
         ]);
-        return $contact;
+        $updatecontact=(new ContactService)->updateContact($request,$id);
+        return $updatecontact;
     }
 
     public function delete($id){
-        $contact=Contact::find($id)->delete();
-        return response()->json($contact);
-
+        $deletecontact=(new ContactService)->deleteContact($id);
+        return response()->json($deletecontact);
     }
 }

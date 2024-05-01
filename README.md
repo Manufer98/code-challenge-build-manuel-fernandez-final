@@ -16,9 +16,9 @@ This project is a simple CRUD (Create, Read, Update, Delete) application built w
 ## Technologies Used
 
 - **Backend:** Laravel, PHP
-- **Frontend:** Next.js, React.js, JavaScript, CSS
+- **Frontend:** Next.js, React.js, JavaScript, Tailwind
 - **Database:** MySQL
-- **Mapbox API:** For address suggestions and geocoding.
+- **Mapbox API:** For address suggestions.
 - **Firebase:** Tool to upload the profile picture.
 
 ## Getting Started

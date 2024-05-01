@@ -37,7 +37,8 @@ To get a local copy up and running follow these simple steps.
    git clone https://github.com/Manufer98/code-challenge-build-manuel-fernandez-final.git
    
 2. Navigate to the project directory
-    ```cd code-challenge-build-manuel-fernandez
+    ```sh
+    cd code-challenge-build-manuel-fernandez
 
 3. Install backend dependencies
      ``` composer install

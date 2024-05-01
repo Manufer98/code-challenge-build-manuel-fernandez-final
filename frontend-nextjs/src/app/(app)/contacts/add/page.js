@@ -5,7 +5,7 @@ import { addContactSchema } from '@/app/(auth)/schema/yup';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 
- import { ToastContainer, toast } from 'react-toastify'
+ import {  toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'; 
 import { useAuth } from '@/hooks/auth';
 import axios from '@/lib/axios';
@@ -76,7 +76,7 @@ const page = () => {
         }
       }
     } else {
-      console.error('No images selected');
+      //console.error('No images selected');
       setIsLoading(false);
     }
   }
@@ -150,7 +150,7 @@ const page = () => {
 
   return (
     <div className='h-screen bg-secondary'>
-      <ToastContainer />
+     
       <div className='bg-pink h-16 flex'>
         <Link href='/dashboard' type="button" className="flex items-center justify-center w-1/2 px-5 py-2 text-sm text-gray-700 transition-colors duration-200    gap-x-2 sm:w-auto ">
           <svg className="w-5 h-5 rtl:rotate-180" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor">
@@ -186,21 +186,6 @@ const page = () => {
 
             <Input onChange={handleChange} id='title' title='Title'
               onBlur={handleBlur} value={values.title} errors={errors.title} touched={touched.title} />
-
-            {/* <div>
-              <h5 className='font-medium'>Title</h5>
-              <input
-                value={values.title}
-                onChange={handleChange}
-                onBlur={handleBlur}
-                id="title"
-                type="text"
-                className={errors.title && touched.title ? " border-2  bg-gray-200 appearance-none  border-red-500 rounded  py-2 px-2 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500" : " bg-gray-200 appearance-none border-2 border-gray-200 rounded  py-2 px-2 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500"}
-              />
-              {errors.title && touched.title && <p className='text-red-500'>{errors.title}</p>}
-            </div> */}
-
-
             <div>
               <h5 className='font-medium'>Profile Picture</h5>
 
@@ -228,22 +213,11 @@ const page = () => {
             <Input onChange={handleChange} id='email' title='Email'
               onBlur={handleBlur} value={values.email} errors={errors.email} touched={touched.email} />
 
-            {/*   <div>
-              <h5 className='font-medium'>Email</h5>
-              <input
-                value={values.email}
-                onChange={handleChange}
-                onBlur={handleBlur}
-                id="email"
-                type="email"
-                className={errors.email && touched.email ? " border-2  bg-gray-200 appearance-none  border-red-500 rounded  py-2 px-2 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500" : " bg-gray-200 appearance-none border-2 border-gray-200 rounded  py-2 px-2 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500"}
-              />
-              {errors.email && touched.email && <p className='text-red-500'>{errors.email}</p>}
-            </div> */}
           </div>
           <div className=' w-full flex justify-center pt-5'>
             <button
               onSubmit={onSubmit}
+              type='submit'
               className="bg-primary hover:bg-blue-700 text-white font-bold py-2  px-12 rounded-full m-3"
             >
               Save</button>

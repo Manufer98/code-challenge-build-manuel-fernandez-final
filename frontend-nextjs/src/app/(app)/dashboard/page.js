@@ -8,7 +8,7 @@ import { GetContacts } from '@/app/redux/slices/contactsSlice'
 import { useDispatch } from 'react-redux'
 import { useAuth } from '@/hooks/auth'
 import {  toast } from 'react-toastify'
-import 'react-toastify/dist/ReactToastify.css';
+import NoContacts from './NoContacts';
 
 
 const Dashboard = () => {
@@ -44,12 +44,6 @@ const Dashboard = () => {
     return (
         < div className='bg-secondary '>
             <Header title="Contacts App" />
-            
-            <button onClick={()=>toast.success('image uploaded', {
-            position: 'top-center',
-            autoClose: 3000,
-            theme: 'dark',
-          })}>toast</button>
 
             <div className='h-screen bg-secondary'>
                 <form className=" p-10">
@@ -106,17 +100,7 @@ const Dashboard = () => {
                 }
 
                 {noData &&
-                    <div className='flex w-full h-full flex-col items-center justify-center  '>
-                        <svg className="w-4 h-4 text-gray-500 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
-                            <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z" />
-                        </svg>
-                        <h1 className='text-xl font-bold mb-5 ' >Add contacts to your database</h1>
-                        <Link
-                            href="/contacts/add"
-                            className="bg-primary hover:bg-blue-700 text-white font-bold py-2  px-12 rounded-full m-3"
-                        >
-                            Add new contacs</Link>
-                    </div>
+                    <NoContacts/>
                 }
             </div>
 

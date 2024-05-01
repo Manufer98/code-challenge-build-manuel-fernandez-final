@@ -3,7 +3,7 @@
 import React, { useId, useState, useEffect } from 'react'
 import { useFormik } from 'formik';
 import { addContactSchema } from '@/app/(auth)/schema/yup';
-import { ToastContainer, toast } from 'react-toastify'
+import {  toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css';
 import { useRouter } from 'next/navigation';
 /* import ReactGoogleAutocomplete from 'react-google-autocomplete'; */
@@ -41,6 +41,11 @@ const page = ({ params }) => {
     }
 
     axios.put(`/api/contact/${params.id}`, contact).then((response) => {
+      toast.success('Contact Updated', {
+        position: 'top-center',
+        autoClose: 5000,
+        theme: 'dark',
+      })
       push('/dashboard')
 
     }).catch(e=>{
@@ -136,9 +141,9 @@ const page = ({ params }) => {
 
   const handleDelete = (id) => {
     axios.delete(`/api/contact/${id}`).then((response) => {
-      toast.success('Contact deleted', {
+      toast.success('Contact Deleted', {
         position: 'top-center',
-        autoClose: 3000,
+        autoClose: 5000,
         theme: 'dark',
       })
       push('/dashboard')
@@ -156,7 +161,7 @@ const page = ({ params }) => {
 
   return (
     <div>
-      <ToastContainer />
+     
       {popUpDelete && <PopUpDelete setPopUpDelete={setPopUpDelete} onDelete={handleDelete} id={params.id} />}
 
       <div className='h-screen bg-secondary'>
@@ -197,34 +202,9 @@ const page = ({ params }) => {
               <Input onChange={handleChange} id='name' title='Name'
                 onBlur={handleBlur} value={values.name} errors={errors.name} touched={touched.name} />
 
-              {/* <div>
-                <h5 className='font-medium'>Name</h5>
-                <input
-                  value={values.name}
-                  onChange={handleChange}
-                  onBlur={handleBlur}
-                  id="name"
-                  type="text"
-                  className={errors.name && touched.name ? " border-2  bg-gray-200 appearance-none  border-red-500 rounded  py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500" : " bg-gray-200 appearance-none border-2 border-gray-200 rounded  py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500"}
-                />
-                {errors.name && touched.name && <p className='text-red-500'>{errors.name}</p>}
-              </div> */}
 
               <Input onChange={handleChange} id='title' title='Title'
                 onBlur={handleBlur} value={values.title} errors={errors.title} touched={touched.title} />
-
-              {/* <div>
-                <h5 className='font-medium'>Title</h5>
-                <input
-                  value={values.title}
-                  onChange={handleChange}
-                  onBlur={handleBlur}
-                  id="title"
-                  type="text"
-                  className={errors.title && touched.title ? " border-2  bg-gray-200 appearance-none  border-red-500 rounded  py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500" : " bg-gray-200 appearance-none border-2 border-gray-200 rounded  py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500"}
-                />
-                {errors.title && touched.title && <p className='text-red-500'>{errors.title}</p>}
-              </div> */}
 
 
               <div>
@@ -246,38 +226,8 @@ const page = ({ params }) => {
               <Input onChange={handleChange} id='phone' title='Phone'
                 onBlur={handleBlur} value={values.phone} errors={errors.phone} touched={touched.phone} />
 
-              {/*  <div>
-                <h5 className='font-medium'>Phone</h5>
-                <input
-                  value={values.phone}
-                  onChange={handleChange}
-                  onBlur={handleBlur}
-                  id="phone"
-                  type="text"
-                  className={errors.phone && touched.phone ? " border-2  bg-gray-200 appearance-none  border-red-500 rounded  py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500" : " bg-gray-200 appearance-none border-2 border-gray-200 rounded  py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500"}
-                />
-                {errors.phone && touched.phone && <p className='text-red-500'>{errors.phone}</p>}
-              </div> */}
-
               <Input onChange={handleChange} id='email' title='Email'
                 onBlur={handleBlur} value={values.email} errors={errors.email} touched={touched.email} />
-
-
-
-
-              {/*    <div>
-                <h5 className='font-medium'>Email</h5>
-                <input
-                  value={values.email}
-                  onChange={handleChange}
-                  onBlur={handleBlur}
-                  id="email"
-                  type="email"
-                  className={errors.email && touched.email ? " border-2  bg-gray-200 appearance-none  border-red-500 rounded  py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500" : " bg-gray-200 appearance-none border-2 border-gray-200 rounded  py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500"}
-                />
-                {errors.email && touched.email && <p className='text-red-500'>{errors.email}</p>}
-              </div> */}
-
 
             </div>
 

@@ -27,9 +27,6 @@ const PopUpDelete = ({setPopUpDelete,onDelete,id}) => {
               data-original="#000000" />
           </svg>
           <h4 className="text-xl font-semibold mt-6">Are you sure you want to delete this contact?</h4>
-          {/* <p className="text-sm text-gray-500 mt-4">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed auctor auctor
-            arcu,
-            at fermentum dui. Maecenas</p> */}
         </div>
         <div className="flex flex-col space-y-2">
           <button type="button" onClick={() =>onDelete(id) 
